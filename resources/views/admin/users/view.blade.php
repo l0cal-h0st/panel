@@ -107,6 +107,29 @@
             </div>
         </div>
     </form>
+    <div class="col-xs-6">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Staff System</h3>
+            </div>
+            <form action="{{ route('admin.staff.update', $user->id) }}" method="POST">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="staff" class="control-label">Staff</label>
+                        <select id="staff" name="staff" class="form-control">
+                            <option value="0">@lang('strings.no')</option>
+                            <option value="1" {{ $user->staff ? 'selected="selected"' : '' }}>@lang('strings.yes')</option>
+                        </select>
+                        <p class="text-muted small">You can enable and disable staff role to this user. He can request an access to servers.</p>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    {!! csrf_field() !!}
+                    <button class="btn btn-success pull-right">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="col-xs-12">
         <div class="box box-danger">
             <div class="box-header with-border">
