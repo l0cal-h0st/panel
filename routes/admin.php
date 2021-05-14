@@ -223,3 +223,13 @@ Route::group(['prefix' => 'nests'], function () {
     Route::delete('/egg/{egg}', 'Nests\EggController@destroy');
     Route::delete('/egg/{egg}/variables/{variable}', 'Nests\EggVariableController@destroy');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Staff Controller Controller Routes
+|--------------------------------------------------------------------------
+|
+| Endpoint: /staff
+|
+*/
+Route::post('/staff/update/{id}', 'StaffController@update')->name('admin.staff.update');
