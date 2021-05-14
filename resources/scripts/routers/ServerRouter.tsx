@@ -32,6 +32,7 @@ import RequireServerPermission from '@/hoc/RequireServerPermission';
 import ServerInstallSvg from '@/assets/images/server_installing.svg';
 import ServerRestoreSvg from '@/assets/images/server_restore.svg';
 import ServerErrorSvg from '@/assets/images/server_error.svg';
+import StaffContainer from '@/components/server/staff/StaffContainer';
 
 const ConflictStateRenderer = () => {
     const status = ServerContext.useStoreState(state => state.server.data?.status || null);
@@ -127,6 +128,9 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                                 <Can action={[ 'settings.*', 'file.sftp' ]} matchAny>
                                     <NavLink to={`${match.url}/settings`}>Settings</NavLink>
                                 </Can>
+                                <Can action={'staff.*'}>
+                                    <NavLink to={`${match.url}/staff`}>Staff Requests</NavLink>
+                                </Can>
                                 {rootAdmin &&
                                 <a href={'/admin/servers/view/' + serverId} rel="noreferrer" target={'_blank'}>
                                     <FontAwesomeIcon icon={faExternalLinkAlt}/>
@@ -185,6 +189,11 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                                     </Route>
                                     <Route path={`${match.path}/startup`} component={StartupContainer} exact/>
                                     <Route path={`${match.path}/settings`} component={SettingsContainer} exact/>
+                                    <Route path={`${match.path}/staff`} exact>
+                                        <RequireServerPermission permissions={'staff.*'}>
+                                            <StaffContainer />
+                                        </RequireServerPermission>
+                                    </Route>
                                     <Route path={'*'} component={NotFound}/>
                                 </Switch>
                             </TransitionRouter>
