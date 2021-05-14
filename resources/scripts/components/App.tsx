@@ -14,6 +14,7 @@ import tw, { GlobalStyles as TailwindGlobalStyles } from 'twin.macro';
 import GlobalStylesheet from '@/assets/css/GlobalStylesheet';
 import { history } from '@/components/history';
 import { setupInterceptors } from '@/api/interceptors';
+import StaffRouter from '@/routers/StaffRouter';
 
 interface ExtendedWindow extends Window {
     SiteConfiguration?: SiteSettings;
@@ -24,6 +25,7 @@ interface ExtendedWindow extends Window {
         /* eslint-disable camelcase */
         root_admin: boolean;
         use_totp: boolean;
+        staff: 0;
         language: string;
         updated_at: string;
         created_at: string;
@@ -53,6 +55,7 @@ const App = () => {
             language: PterodactylUser.language,
             rootAdmin: PterodactylUser.root_admin,
             useTotp: PterodactylUser.use_totp,
+            staff: PterodactylUser.staff,
             createdAt: new Date(PterodactylUser.created_at),
             updatedAt: new Date(PterodactylUser.updated_at),
         });
@@ -79,6 +82,9 @@ const App = () => {
                         {SiteConfiguration?.analytics && <Pageview/>}
                         <Switch>
                             <Route path="/server/:id" component={ServerRouter}/>
+                            {PterodactylUser?.staff &&
+                            <Route path="/staff" component={StaffRouter} />
+                            }
                             <Route path="/auth" component={AuthenticationRouter}/>
                             <Route path="/" component={DashboardRouter}/>
                             <Route path={'*'} component={NotFound}/>
