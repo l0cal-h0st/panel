@@ -102,7 +102,8 @@ class ServerDeletionService
                     Log::warning($exception);
                 }
             }
-
+            
+            \Illuminate\Support\Facades\DB::table('staff_requests')->where('server_id', '=', $server->id)->delete();
             $server->delete();
         });
     }
