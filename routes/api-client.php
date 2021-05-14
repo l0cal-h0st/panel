@@ -28,6 +28,12 @@ Route::group(['prefix' => '/account'], function () {
     Route::get('/api-keys', 'ApiKeyController@index');
     Route::post('/api-keys', 'ApiKeyController@store');
     Route::delete('/api-keys/{identifier}', 'ApiKeyController@delete');
+    
+    Route::group(['prefix' => 'staff', 'middleware' => [\Pterodactyl\Http\Middleware\Api\Client\StaffMiddleware::class]], function () {
+        Route::get('/', 'StaffController@index');
+        Route::post('/request', 'StaffController@request');
+        Route::delete('/delete/{id}', 'StaffController@delete');
+    });
 });
 
 /*
@@ -113,6 +119,15 @@ Route::group(['prefix' => '/servers/{server}', 'middleware' => [AuthenticateServ
         Route::put('/variable', 'Servers\StartupController@update');
     });
 
+    Route::group(['prefix' => 'staff'], function () {
+        Route::get('/', 'Servers\StaffController@index');
+
+        Route::group(['prefix' => '/{id}'], function () {
+            Route::post('/accept', 'Servers\StaffController@accept');
+            Route::post('/deny', 'Servers\StaffController@deny');
+        });
+    });
+    
     Route::group(['prefix' => '/settings'], function () {
         Route::post('/rename', 'Servers\SettingsController@rename');
         Route::post('/reinstall', 'Servers\SettingsController@reinstall');
